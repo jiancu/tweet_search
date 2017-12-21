@@ -5,7 +5,7 @@ import multiprocessing
 from multiprocessing import Pool
 
 from Config import get_config
-got,db,r = get_config()
+got,db,r = get_noau_config()
 
 def advance_search_dataset(q,f,num,event_id):
     _,db,_ = get_config()
