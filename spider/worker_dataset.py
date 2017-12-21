@@ -4,7 +4,7 @@ import json
 import multiprocessing
 from multiprocessing import Pool
 
-from Config import get_config
+from Config import get_noau_config
 got,db,r = get_noau_config()
 
 def advance_search_dataset(q,f,num,event_id):

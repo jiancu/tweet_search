@@ -2,7 +2,7 @@ import re
 import json
 from datetime import datetime,timedelta
 
-from Config import get_config
+from Config import get_noau_config
 _,db,r = get_noau_config()
 
 def get_location(Location):
