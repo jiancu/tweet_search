@@ -17,6 +17,9 @@ from pymongo import InsertOne, DeleteMany, ReplaceOne, UpdateOne
 client = pymongo.MongoClient('54.161.160.206:29017')
 db = client.tweet
 
+import redis
+r = redis.StrictRedis(host='54.161.160.206', port=6479, db=0)
+
 
 def batch_ftpredict(texts):
 	if type(texts) != list:
