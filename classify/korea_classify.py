@@ -59,7 +59,7 @@ def classify():
 		ids.append(i['_id'])
 		texts.append(i['tweet']['raw_text'])
 	if len(ids) == 0:
-		break
+		return None
 	probs = batch_ftpredict(texts)
 	requests = [UpdateOne({'_id': _id,'class':None}, {'$set': {'class':probs[index]}}) for index,_id in tqdm(enumerate(ids))]
 	result = db.korea.bulk_write(requests)
