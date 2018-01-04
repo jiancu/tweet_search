@@ -20,7 +20,7 @@ db = client.tweet
 import redis
 r = redis.StrictRedis(host='54.161.160.206', port=6479, db=0)
 
-
+re_prob = re.compile('(?:__label__(\d)\s([^_]+)[\s]*)')
 def batch_ftpredict(texts):
 	if type(texts) != list:
 		texts = [texts]
