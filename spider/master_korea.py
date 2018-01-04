@@ -24,7 +24,7 @@ def get_task():
         now = datetime.now()
         for loc in locs:
             for trigger in triggers:
-                q = get_query_str(locs,triggers)
+                q = get_query_str(loc,trigger)
                 message = {'q':q,'f':['&f=news','','&f=tweets'],'num':1000,
                 "sinceTimeStamp":(now - timedelta(minutes=60)).strftime("%Y-%m-%d %H:%M:%S"),
                 "untilTimeStamp":now.strftime("%Y-%m-%d %H:%M:%S")
