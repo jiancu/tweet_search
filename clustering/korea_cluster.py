@@ -95,7 +95,7 @@ def get_ner(text):
 
 def clustering():
 	query = db.korea.find({'class.1':{'$gte':0.5},'cluster':None},{'_id':1,'tweet.standard_text':1,'tweet.hashtags':1,'tweet.created_at':1})
-	for batch in query.batch_size(1000)
+	for batch in query.batch_size(1000):
 		ids = []
 		texts = []
 		hashtags = []
