@@ -29,14 +29,14 @@ keywords = [].extend(locs).extend(triggers).extend(targets)
 doc_keywords = [nlp(key) for key in keywords]
 
 def Doc2VecTransformer(X):
-    vectors = []
-    keyword_similarity = {}
-    for i in X:
-    	doc = nlp(i)
-    	for token in doc:
-    		keyword_similarity[token.text] = np.mean([i.similarity(token) for i in doc_keywords])
-        vectors.append(doc.vector)   
-    return np.asmatrix(vectors),keyword_similarity
+		vectors = []
+		keyword_similarity = {}
+		for i in X:
+			doc = nlp(i)
+			for token in doc:
+				keyword_similarity[token.text] = np.mean([i.similarity(token) for i in doc_keywords])
+				vectors.append(doc.vector)   
+		return np.asmatrix(vectors),keyword_similarity
 
 def tweet_cluster(X,max_cluster_num=8):
 		count = CountVectorizer(ngram_range=(1, 3),min_df=2,stop_words='english')
@@ -44,8 +44,8 @@ def tweet_cluster(X,max_cluster_num=8):
 		tfidf = TfidfTransformer(use_idf=True)
 		X_train_tfidf = tfidf.fit_transform(X_train_count)
 		# km,score = kmeans_best(X,X_train_tfidf,max_cluster_num)
-	    X_train_vector,keyword_similarity = Doc2VecTransformer(X)
-	    km,score = kmeans_best(X,X_train_vector,max_cluster_num)		
+		X_train_vector,keyword_similarity = Doc2VecTransformer(X)
+		km,score = kmeans_best(X,X_train_vector,max_cluster_num)
 		#print 'clusters:',km.get_params()['n_clusters']
 		lda = LatentDirichletAllocation(n_topics=km.get_params()['n_clusters'],
 									max_iter=5,
@@ -144,8 +144,7 @@ def clustering():
 				clusters_hashtags[str(clusters[index])].append(hashtag)
 		for k,v in clusters_hashtags:
 			clusters_hashtags[k] = [{i[0]:i[1]} for i in Counter(v).most_common(3)]
-		
-		
+
 		db.cluster_metadata.insert_one({'_id':cluster_hash,'start_time':dates[0],'end_time':dates[-1],
 			'texts_num':len(texts),'clusters_size':clusters_counter_,'clusters_hashtags':clusters_hashtags,
 			'cluster_entities':cluster_entities,'topics':lda_words})
