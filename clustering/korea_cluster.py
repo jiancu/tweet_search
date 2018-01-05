@@ -73,7 +73,7 @@ def kmeans_best(X,X_train_tfidf=None,max_cluster_num=8):
 		text_clusters.append((mbkm,socre))
 	return sorted(text_clusters,key=lambda i:i[1])[0]
     
-def get_topics_top_words(model, feature_names, n_top_words=30):
+def get_topics_top_words(model, feature_names, n_top_words=10):
 	topics_top_words = {}
 	for topic_idx, topic in enumerate(model.components_):
 		topics_top_words[str(topic_idx)] = [feature_names[i] for i in topic.argsort()[:-n_top_words - 1:-1]]
@@ -84,13 +84,13 @@ def get_ner(text):
 	who,where,when,what =([],[],[],[])
 	for ner in doc.ents:
 		if ner.label_ in ['PERSON','NORP','ORG','PRODUCT','WORK_OF_ART','LAW']:
-			who.extend(ner.text)
+			who.append(ner.text)
 		elif ner.label_ in ['FACILITY','GPE','LOC',]:
-			where.extend(ner.text)
+			where.append(ner.text)
 		elif ner.label_ in ['DATE','TIME']:
-			when.extend(ner.text)
+			when.append(ner.text)
 		elif ner.label_ in ['EVENT']:
-			what.extend(ner.text)
+			what.append(ner.text)
 		else:
 			pass
 	return who,where,when,what
