@@ -143,7 +143,7 @@ def clustering():
 	clusters_hashtags = defaultdict(list)
 	for index,hashtag in enumerate(hashtags):
 		if len(hashtag) > 0:
-			clusters_hashtags[str(clusters[index])].append(hashtag)
+			clusters_hashtags[str(clusters[index])].extend(hashtag)
 	for k,v in clusters_hashtags.iteritems():
 		clusters_hashtags[k] = [{i[0]:i[1]} for i in Counter(v).most_common(3)]
 
