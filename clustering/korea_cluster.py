@@ -94,60 +94,59 @@ def get_ner(text):
 	
 
 def clustering():
-	query = db.korea.find({'class.1':{'$gte':0.5},'cluster':None},{'_id':1,'tweet.standard_text':1,'tweet.hashtags':1,'tweet.created_at':1})
-	for batch in query.batch_size(1000):
-		ids = []
-		texts = []
-		hashtags = []
-		dates = []
-		ners = []
-		for i in batch:
-			ids.append(i['_id'])
-			texts.append(i['tweet']['standard_text'])
-			hashtags.append(i['tweet']['hashtags'])
-			dates.append(i['tweet']['created_at'])
-			ners.append(get_ner(i['tweet']['standard_text']))
-		if len(ids) == 0:
-			continue
-		cluster_hash  = ids[0]+ids[-1]
-		km,lda_words = tweet_cluster(texts)
-		clusters = km.labels_
-		clusters = [int(i) for i in clusters]
-		requests = [UpdateOne({'_id': _id,'cluster':None}, 
-			{'$set': {'cluster':{'cluster_label':clusters[index],'cluster_hash':cluster_hash}}}) for index,_id in tqdm(enumerate(ids))]
-		result = db.korea.bulk_write(requests)
-		pprint(result.bulk_api_result)
-		
-		whos,wheres,whens,whats = (defaultdict(list),defaultdict(list),defaultdict(list),defaultdict(list))
-		for index,_id in tqdm(enumerate(ids)):
-			who,where,when,what = ners[index]
-			whos[clusters[index]].extend(who)
-			wheres[clusters[index]].extend(where)
-			whens[clusters[index]].extend(when)
-			whats[clusters[index]].extend(what)
-		clusters_counter = dict(Counter(clusters))
-		clusters_counter_ = defaultdict()
-		for k,v in clusters_counter.iteritems():
-			clusters_counter_[str(k)] = v
-		
-		cluster_entities = defaultdict()
-		for k,v in clusters_counter.iteritems():
-			cluster_entities[str(k)] = {'whos':[{i[0]:i[1]} for i in Counter(whos[k]).most_common(3)],
-										'wheres':[{i[0]:i[1]} for i in Counter(wheres[k]).most_common(3)],
-										'whens':[{i[0]:i[1]} for i in Counter(whens[k]).most_common(3)],
-										'whats':[{i[0]:i[1]} for i in Counter(whats[k]).most_common(3)]
-			}
-		
-		clusters_hashtags = defaultdict(list)
-		for index,hashtag in enumerate(hashtags):
-			if len(hashtag) > 0:
-				clusters_hashtags[str(clusters[index])].append(hashtag)
-		for k,v in clusters_hashtags:
-			clusters_hashtags[k] = [{i[0]:i[1]} for i in Counter(v).most_common(3)]
+	query = db.korea.find({'class.1':{'$gte':0.5},'cluster':None},{'_id':1,'tweet.standard_text':1,'tweet.hashtags':1,'tweet.created_at':1}).limit(1000)
+	ids = []
+	texts = []
+	hashtags = []
+	dates = []
+	ners = []
+	for i in query:
+		ids.append(i['_id'])
+		texts.append(i['tweet']['standard_text'])
+		hashtags.append(i['tweet']['hashtags'])
+		dates.append(i['tweet']['created_at'])
+		ners.append(get_ner(i['tweet']['standard_text']))
+	if len(ids) == 0:
+		continue
+	cluster_hash  = ids[0]+ids[-1]
+	km,lda_words = tweet_cluster(texts)
+	clusters = km.labels_
+	clusters = [int(i) for i in clusters]
+	requests = [UpdateOne({'_id': _id,'cluster':None}, 
+		{'$set': {'cluster':{'cluster_label':clusters[index],'cluster_hash':cluster_hash}}}) for index,_id in tqdm(enumerate(ids))]
+	result = db.korea.bulk_write(requests)
+	pprint(result.bulk_api_result)
+	
+	whos,wheres,whens,whats = (defaultdict(list),defaultdict(list),defaultdict(list),defaultdict(list))
+	for index,_id in tqdm(enumerate(ids)):
+		who,where,when,what = ners[index]
+		whos[clusters[index]].extend(who)
+		wheres[clusters[index]].extend(where)
+		whens[clusters[index]].extend(when)
+		whats[clusters[index]].extend(what)
+	clusters_counter = dict(Counter(clusters))
+	clusters_counter_ = defaultdict()
+	for k,v in clusters_counter.iteritems():
+		clusters_counter_[str(k)] = v
+	
+	cluster_entities = defaultdict()
+	for k,v in clusters_counter.iteritems():
+		cluster_entities[str(k)] = {'whos':[{i[0]:i[1]} for i in Counter(whos[k]).most_common(3)],
+									'wheres':[{i[0]:i[1]} for i in Counter(wheres[k]).most_common(3)],
+									'whens':[{i[0]:i[1]} for i in Counter(whens[k]).most_common(3)],
+									'whats':[{i[0]:i[1]} for i in Counter(whats[k]).most_common(3)]
+		}
+	
+	clusters_hashtags = defaultdict(list)
+	for index,hashtag in enumerate(hashtags):
+		if len(hashtag) > 0:
+			clusters_hashtags[str(clusters[index])].append(hashtag)
+	for k,v in clusters_hashtags:
+		clusters_hashtags[k] = [{i[0]:i[1]} for i in Counter(v).most_common(3)]
 
-		db.cluster_metadata.insert_one({'_id':cluster_hash,'start_time':dates[0],'end_time':dates[-1],
-			'texts_num':len(texts),'clusters_size':clusters_counter_,'clusters_hashtags':clusters_hashtags,
-			'cluster_entities':cluster_entities,'topics':lda_words})
+	db.cluster_metadata.insert_one({'_id':cluster_hash,'start_time':dates[0],'end_time':dates[-1],
+		'texts_num':len(texts),'clusters_size':clusters_counter_,'clusters_hashtags':clusters_hashtags,
+		'cluster_entities':cluster_entities,'topics':lda_words})
 
 if __name__ == '__main__':
 	print 'clustering_worker start!'
