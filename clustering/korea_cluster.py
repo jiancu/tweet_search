@@ -3,6 +3,8 @@ import time
 from datetime import datetime,timedelta
 from collections import Counter,defaultdict
 
+import numpy as np
+
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.cluster import MiniBatchKMeans
