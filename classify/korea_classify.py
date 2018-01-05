@@ -73,6 +73,7 @@ if __name__ == '__main__':
 			print 'classify_worker process!'
 			classify()
 			message = json.loads(queue)
+			print message
 			if message['is_last']:
 				r.rpush('task:clustering',json.dumps(message))
 		print 'classify_worker wait!'
