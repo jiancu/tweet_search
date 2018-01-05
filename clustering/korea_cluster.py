@@ -25,7 +25,7 @@ nlp = spacy.load('en_core_web_md')
 locs=["North Korea"]
 triggers=["test","launch","fire"]
 targets = ["messile","satellite","rocket","nuclear"]
-keywords = [].extend(locs).extend(triggers).extend(targets)
+keywords = locs+triggers+targets
 doc_keywords = [nlp(key) for key in keywords]
 
 def Doc2VecTransformer(X):
