@@ -58,7 +58,7 @@ def tweet_cluster(X,max_cluster_num=8):
 		lda.fit(X_train_tfidf)
 		tf_feature_names = count.get_feature_names()
 		lda_words = get_topics_top_words(lda, tf_feature_names)
-		for k,v in lda_words:
+		for k,v in lda_words.iteritems():
 			lda_words[k] = [v[ix] for ix in np.argsort([keyword_similarity[i] for i in v])[:-11:-1]]
 		return km,lda_words
 
@@ -144,7 +144,7 @@ def clustering():
 	for index,hashtag in enumerate(hashtags):
 		if len(hashtag) > 0:
 			clusters_hashtags[str(clusters[index])].append(hashtag)
-	for k,v in clusters_hashtags:
+	for k,v in clusters_hashtags.iteritems():
 		clusters_hashtags[k] = [{i[0]:i[1]} for i in Counter(v).most_common(3)]
 
 	db.cluster_metadata.insert_one({'_id':cluster_hash,'start_time':dates[0],'end_time':dates[-1],
