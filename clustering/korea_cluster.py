@@ -156,5 +156,5 @@ if __name__ == '__main__':
 		if queue:
 			print 'clustering_worker process!'
 			clustering()
-		time.sleep(5*60)
 		print 'clustering_worker wait!'
+		time.sleep(5*60)
