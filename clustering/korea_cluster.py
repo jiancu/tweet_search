@@ -58,8 +58,8 @@ def tweet_cluster(X,max_cluster_num=8):
 		lda.fit(X_train_tfidf)
 		tf_feature_names = count.get_feature_names()
 		lda_words = get_topics_top_words(lda, tf_feature_names)
-		for k,v in lda_words.iteritems():
-			lda_words[k] = [v[ix] for ix in np.argsort([keyword_similarity[i] for i in v])[:-11:-1]]
+		#for k,v in lda_words.iteritems():
+			#lda_words[k] = [v[ix] for ix in np.argsort([keyword_similarity[i] for i in v])[:-11:-1]]
 		return km,lda_words
 
 
@@ -90,7 +90,7 @@ def get_ner(text):
 		elif ner.label_ in ['DATE','TIME']:
 			when.extend(ner.text)
 		elif ner.label_ in ['EVENT']:
-			what.extend(ner.text)			
+			what.extend(ner.text)
 		else:
 			pass
 	return who,where,when,what
