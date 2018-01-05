@@ -1,0 +1,103 @@
+{
+    "_id" : "949189506803970049949189023976783872",
+    "clusters_size" : {
+        "1" : 242,
+        "0" : 326
+    },
+    "texts_num" : 36,
+    "end_time" : ISODate("2018-01-05T08:01:13.000Z"),
+    "start_time" : ISODate("2018-01-05T08:03:08.000Z"),
+    "cluster_entities" : {
+        "1" : {
+            "whats" : [],
+            "whens" : [],
+            "wheres" : [],
+            "whos" : []
+        },
+        "0" : {
+            "whats" : [ 
+                {
+                    "South Korea Plan First Talks" : 2
+                }, 
+                {
+                    "Winter Olympics" : 2
+                }, 
+                {
+                    "WWII" : 1
+                }
+            ],
+            "whens" : [ 
+                {
+                    "next week" : 2
+                }, 
+                {
+                    "Next Week" : 2
+                }, 
+                {
+                    "January 9" : 1
+                }
+            ],
+            "wheres" : [ 
+                {
+                    "North Korea" : 26
+                }, 
+                {
+                    "South Korea" : 7
+                }, 
+                {
+                    "US" : 2
+                }
+            ],
+            "whos" : [ 
+                {
+                    "Its Own Cities," : 3
+                }, 
+                {
+                    "SKYNEWS" : 2
+                }, 
+                {
+                    "Sohae" : 2
+                }
+            ]
+        }
+    },
+    "topics" : {
+        "1" : [ 
+            "north", 
+            "south korea", 
+            "south", 
+            "korea", 
+            "north korea", 
+            "test", 
+            "talks", 
+            "new", 
+            "accepts", 
+            "says"
+        ],
+        "0" : [ 
+            "korea", 
+            "north korea", 
+            "missile", 
+            "korea hit", 
+            "city", 
+            "korea hit city", 
+            "north", 
+            "report", 
+            "hit city", 
+            "missile launch report"
+        ]
+    },
+    "clusters_hashtags" : {
+        "0" : [ 
+            {
+                "news" : 3
+            }, 
+            {
+                "RTGWorld" : 1
+            }, 
+            {
+                "abc" : 1
+            }
+        ]
+    }
+}
