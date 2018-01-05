@@ -26,7 +26,7 @@ locs=["North Korea"]
 triggers=["test","launch","fire"]
 targets = ["messile","satellite","rocket","nuclear"]
 keywords = locs+triggers+targets
-doc_keywords = [nlp(key) for key in keywords]
+doc_keywords = [nlp(key.decode('utf-8')) for key in keywords]
 
 def Doc2VecTransformer(X):
 		vectors = []
