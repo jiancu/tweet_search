@@ -107,7 +107,7 @@ def clustering():
 		dates.append(i['tweet']['created_at'])
 		ners.append(get_ner(i['tweet']['standard_text']))
 	if len(ids) == 0:
-		continue
+		return None
 	cluster_hash  = ids[0]+ids[-1]
 	km,lda_words = tweet_cluster(texts)
 	clusters = km.labels_
